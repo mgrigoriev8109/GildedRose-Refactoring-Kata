@@ -15,3 +15,11 @@ describe("An aged brie with quality 50", function() {
     expect(items[0].quality).toBe(50);
   });
 });
+
+describe("An legendary item with quality 80", function() {
+  it("Should not change quality", function() {
+    const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 50, 80)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(80);
+  });
+});
