@@ -15,13 +15,11 @@ class Shop {
 
     for (let i = 0; i < this.items.length; i++) {
       let item = this.items[i]
-      if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (item.quality > 0) {
-          if (item.name != 'Sulfuras, Hand of Ragnaros') {
-            this.decreaseQuality(item)
-          }
-        }
-      } else {
+      if (this.regularItem(item)) {
+        this.decreaseQuality(item)
+      }
+        
+      else {
         this.increaseQuality(item)
         if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
           if (item.sellIn < 11) {
@@ -35,7 +33,7 @@ class Shop {
         }
         
       }
-      if (item.name != 'Sulfuras, Hand of Ragnaros') {
+      if (this.nonLegendaryItem(item)) {
         item.sellIn = item.sellIn - 1;
       }
 
@@ -43,7 +41,7 @@ class Shop {
         if (item.name != 'Aged Brie') {
           if (item.name != 'Backstage passes to a TAFKAL80ETC concert') {
             if (item.quality > 0) {
-              if (item.name != 'Sulfuras, Hand of Ragnaros') {
+              if (this.nonLegendaryItem(item)) {
                 this.decreaseQuality(item)
               }
             }
@@ -57,6 +55,18 @@ class Shop {
     }
 
     return this.items;
+  }
+
+  nonLegendaryItem(item){
+    item.name != 'Sulfuras, Hand of Ragnaros'
+  }
+
+  regularItem(item){
+    let nonRegularNames = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert', 'Sulfuras, Hand of Ragnaros']
+    
+    if(item.quality > 0 && !nonRegularNames.includes(item.name)){
+      return true
+    }
   }
 
   decreaseQuality(item){
