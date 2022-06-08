@@ -87,3 +87,11 @@ describe("Backstage passes", function() {
     expect(items[0].quality).toBe(0);
   });
 });
+
+describe("Conjured item", function() {
+  it("decreases in Quality twice as fast", function() {
+    const gildedRose = new Shop([new Item("Conjured Sword", 4, 5)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(3);
+  });
+});

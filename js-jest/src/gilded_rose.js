@@ -27,40 +27,33 @@ class Shop {
   }
 
   initialQualityUpdate(item){
-    if (this.regularItem(item) && this.hasQuality(item)) {
+    if (this.betterWithAge(item)) {
+      this.betterWithAgeIncrease(item)
+    }
+    else if (this.conjured(item) && item.quality > 0) {
+      this.decreaseQuality(item)
       this.decreaseQuality(item)
     }
-      
-    else {
-      this.betterWithAge(item)
+    else if (this.regular(item) && item.quality > 0) {
+      this.decreaseQuality(item)
     }
   }
 
-  pastSellInDate(item){
-    if (item.sellIn < 0) {
-      if (item.name != 'Aged Brie') {
-        if (this.regularItem(item)) {
-          this.decreaseQuality(item)
-        } else {
-          item.quality = 0
-        }
-      } else {
-        this.increaseQuality(item)
-      }
-    }
-  }
-
-  hasQuality(item){
-    if (item.quality > 0){
+  betterWithAge(item){
+    let betterWithAgeItems = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert']
+    if(betterWithAgeItems.includes(item.name)){
       return true
     }
   }
 
-  betterWithAge(item){ 
-    let betterWithAgeItems = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert']
-    if (betterWithAgeItems.includes(item.name)){
-      this.increaseQuality(item)
-      this.increaseConcertQuality(item)
+  betterWithAgeIncrease(item){ 
+    this.increaseQuality(item)
+    this.increaseConcertQuality(item)
+  }
+
+  increaseQuality(item){
+    if (item.quality < 50) {
+      item.quality += 1;
     }
   }
 
@@ -76,6 +69,10 @@ class Shop {
       
     }
   }
+  
+  decreaseQuality(item){
+    item.quality = item.quality - 1;
+  }
 
   decreaseSellIn(item){
     if (item.name != 'Sulfuras, Hand of Ragnaros') {
@@ -83,7 +80,7 @@ class Shop {
     }
   }
 
-  regularItem(item){
+  regular(item){
     let irregularItems = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert', 'Sulfuras, Hand of Ragnaros']
     
     if(irregularItems.includes(item.name)){
@@ -94,15 +91,29 @@ class Shop {
     }
   }
 
-  decreaseQuality(item){
-    item.quality = item.quality - 1;
-  }
-
-  increaseQuality(item){
-    if (item.quality < 50) {
-      item.quality += 1;
+  conjured(item){
+    if(item.name.includes('Conjured')){
+      return true
+    }
+    else {
+      return false
     }
   }
+
+  pastSellInDate(item){
+    if (item.sellIn < 0) {
+      if (item.name != 'Aged Brie') {
+        if (this.regular(item)) {
+          this.decreaseQuality(item)
+        } else {
+          item.quality = 0
+        }
+      } else {
+        this.increaseQuality(item)
+      }
+    }
+  }
+
 }
 
 module.exports = {
