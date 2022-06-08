@@ -7,3 +7,11 @@ describe("A regular item with quality 10", function() {
     expect(items[0].quality).toBe(9);
   });
 });
+
+describe("An aged brie with quality 50", function() {
+  it("Should not become 51, but stay at quality 50", function() {
+    const gildedRose = new Shop([new Item("Aged Brie", 50, 50)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(50);
+  });
+});
