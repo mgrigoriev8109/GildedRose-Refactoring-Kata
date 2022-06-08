@@ -15,13 +15,8 @@ class Shop {
 
     for (let i = 0; i < this.items.length; i++) {
       let item = this.items[i]
-      if (this.regularItem(item) && this.hasQuality(item)) {
-        this.decreaseQuality(item)
-      }
-        
-      else {
-        this.betterWithAge(item)
-      }
+
+      this.initialQualityUpdate(item)
 
       this.decreaseSellIn(item)
 
@@ -31,12 +26,21 @@ class Shop {
     return this.items;
   }
 
+  initialQualityUpdate(item){
+    if (this.regularItem(item) && this.hasQuality(item)) {
+      this.decreaseQuality(item)
+    }
+      
+    else {
+      this.betterWithAge(item)
+    }
+  }
 
   pastSellInDate(item){
     if (item.sellIn < 0) {
       if (item.name != 'Aged Brie') {
-        if (this.regularItem) {
-              this.decreaseQuality(item)
+        if (this.regularItem(item)) {
+          this.decreaseQuality(item)
         } else {
           item.quality = 0
         }
@@ -45,12 +49,13 @@ class Shop {
       }
     }
   }
-  
+
   hasQuality(item){
     if (item.quality > 0){
       return true
     }
   }
+
   betterWithAge(item){ 
     let betterWithAgeItems = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert']
     if (betterWithAgeItems.includes(item.name)){
@@ -73,19 +78,18 @@ class Shop {
   }
 
   decreaseSellIn(item){
-    if (this.nonLegendaryItem(item)) {
+    if (item.name != 'Sulfuras, Hand of Ragnaros') {
       item.sellIn = item.sellIn - 1;
     }
   }
-  nonLegendaryItem(item){
-    item.name != 'Sulfuras, Hand of Ragnaros'
-  }
-
 
   regularItem(item){
-    let nonRegularNames = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert', 'Sulfuras, Hand of Ragnaros']
+    let irregularItems = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert', 'Sulfuras, Hand of Ragnaros']
     
-    if(!nonRegularNames.includes(item.name)){
+    if(irregularItems.includes(item.name)){
+      return false
+    }
+    else {
       return true
     }
   }

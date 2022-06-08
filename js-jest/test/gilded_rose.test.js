@@ -24,15 +24,23 @@ describe("The Quality of an item", function() {
   });
 });
 
-describe("An aged brie with quality 50", function() {
-  it("Should not become 51, but stay at quality 50", function() {
+describe("Aged Brie", function() {
+  it("increases in Quality the older it gets", function() {
+    const gildedRose = new Shop([new Item("Aged Brie", 1, 0)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(1);
+  });
+});
+
+describe("The Quality of an item", function() {
+  it("is never more than 50", function() {
     const gildedRose = new Shop([new Item("Aged Brie", 50, 50)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).toBe(50);
   });
 });
 
-describe("An legendary item with quality 80", function() {
+describe("Sulfuras", function() {
   it("Should not change quality", function() {
     const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 50, 80)]);
     const items = gildedRose.updateQuality();
@@ -40,3 +48,42 @@ describe("An legendary item with quality 80", function() {
   });
 });
 
+describe("Sulfuras", function() {
+  it("never has to be sold", function() {
+    const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 50, 80)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).toBe(50);
+  });
+});
+
+describe("Backstage passes", function() {
+  it("increases in Quality by 1 the older it gets", function() {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 11, 5)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(6);
+  });
+});
+
+describe("Backstage passes", function() {
+  it("increases in Quality by 2 when 10 days or less left", function() {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 9, 5)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(7);
+  });
+});
+
+describe("Backstage passes", function() {
+  it("increases in Quality by 3 when 5 days or less left", function() {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 4, 5)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(8);
+  });
+});
+
+describe("Backstage passes", function() {
+  it("decreases in Quality to 0 when 0 days left", function() {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 0, 5)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(0);
+  });
+});
